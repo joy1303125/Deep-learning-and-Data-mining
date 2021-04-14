@@ -66,15 +66,15 @@ def define_discriminator(in_shape=(64,64,3)):
 # normal
     model.add(Conv2D(64, (5,5), padding='same',kernel_initializer='glorot_uniform', input_shape=in_shape))
     model.add(LeakyReLU(alpha=0.2))
-# downsample to 40x40
+
     model.add(Conv2D(128, (5,5), strides=(2,2),kernel_initializer='glorot_uniform', padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(LeakyReLU(alpha=0.2))
-# downsample to 20x20
+
     model.add(Conv2D(256, (5,5), strides=(2,2), kernel_initializer='glorot_uniform',padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(LeakyReLU(alpha=0.2))
-# downsample to 10x10
+
     model.add(Conv2D(512, (5,5), strides=(2,2), kernel_initializer='glorot_uniform',padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(LeakyReLU(alpha=0.2))
@@ -96,28 +96,28 @@ def define_discriminator(in_shape=(64,64,3)):
 # define the standalone generator model
 def define_generator(latent_dim):
     model = Sequential()
-# foundation for 5x5 feature maps
+
     n_nodes = 512 * 4 * 4
     model.add(Dense(n_nodes,kernel_initializer='glorot_uniform', input_dim=latent_dim))
     model.add(Reshape((4, 4, 512)))
     model.add(BatchNormalization(momentum=0.5))
     model.add(Activation('relu'))
-# upsample to 10x10
+
     model.add(Conv2DTranspose(256, (5,5), strides=(2,2), kernel_initializer='glorot_uniform',padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(Activation('relu'))
-# upsample to 20x20
+
     model.add(Conv2DTranspose(128, (5,5), strides=(2,2),kernel_initializer='glorot_uniform', padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(Activation('relu'))
-# upsample to 40x40
+
     model.add(Conv2DTranspose(64, (5,5), strides=(2,2),kernel_initializer='glorot_uniform', padding='same'))
     model.add(BatchNormalization(momentum=0.5))
     model.add(Activation('relu'))
-# upsample to 80x80
+
     model.add(Conv2DTranspose(3, (5,5), strides=(2,2),kernel_initializer='glorot_uniform', padding='same'))
     model.add(Activation('tanh'))
-# output layer 80x80x3
+
     optimizer = Adam(lr=0.00015, beta_1=0.5)
     model.compile(loss='binary_crossentropy',optimizer=optimizer,
                   metrics=None)
