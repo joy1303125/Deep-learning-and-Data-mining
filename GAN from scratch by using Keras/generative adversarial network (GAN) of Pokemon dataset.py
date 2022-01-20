@@ -155,18 +155,8 @@ def load_real_samples():
     X = (X - 127.5) / 127.5
     return X
 
-
-# In[49]:
-
-
 import random
-def generate_real_samples(dataset, n_samples):
-    rand_selection = []
-    for i in range(n_samples):
-        rand_selection.append(random.randint(0, dataset.shape[0]-1))
-    X = dataset[rand_selection]
-    y = np.ones((n_samples, 1))
-    return X, y
+
 
 
 # In[50]:
